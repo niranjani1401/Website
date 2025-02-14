@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import StockChart from '../components/StockChart';
 import StockSummary from '../components/StockSummary';
+import TradingViewWidget from '../components/TradingViewWidget';
 
 const StockAnalysis = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,7 +38,7 @@ const StockAnalysis = () => {
         <>
           <div className="bg-gray-900 rounded-xl p-6 mb-8 shadow-xl">
             <h2 className="text-xl font-semibold mb-4 text-blue-400">{selectedStock} Stock Performance</h2>
-            <StockChart symbol={selectedStock} />
+            <TradingViewWidget symbol={selectedStock} />
           </div>
 
           <div className="bg-gray-900 rounded-xl p-6 shadow-xl">
