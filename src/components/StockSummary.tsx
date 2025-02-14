@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface StockSummaryProps {
   symbol: string;
@@ -8,22 +7,30 @@ interface StockSummaryProps {
 const StockSummary: React.FC<StockSummaryProps> = ({ symbol }) => {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchSummary = async () => {
       setLoading(true);
-      // Note: In a real application, you would:
-      // 1. Fetch news articles from a proper API
-      // 2. Use your actual Gemini API key
-      // This is just mock data for demonstration
-      const mockSummary = `${symbol} has shown strong performance in the technology sector. 
-        Recent analyst reports suggest positive momentum due to innovative product launches 
-        and expanding market share. The company's financial health remains robust with 
-        steady revenue growth and strong cash flows. Market sentiment is generally bullish 
-        with a positive outlook for the next quarter.`;
-      
-      setSummary(mockSummary);
-      setLoading(false);
+      setError('');
+      try {
+        const response = await fetch('http://127.0.0.1:5000/analyze-stock', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ticker: symbol })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch stock summary');
+        }
+        const data = await response.json();
+        setSummary(data.analysis);
+      } catch (err) {
+        setError('Error fetching stock summary. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchSummary();
@@ -35,6 +42,10 @@ const StockSummary: React.FC<StockSummaryProps> = ({ symbol }) => {
       <div className="h-4 bg-gray-700 rounded w-full mb-4"></div>
       <div className="h-4 bg-gray-700 rounded w-5/6"></div>
     </div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
   }
 
   return (

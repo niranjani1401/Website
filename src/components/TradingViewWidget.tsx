@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 interface TradingViewWidgetProps {
   symbol?: string;
 }
-//trading
+
 const TradingViewWidget: React.FC<TradingViewWidgetProps> = ({ symbol }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
