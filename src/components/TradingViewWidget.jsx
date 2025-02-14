@@ -5,6 +5,9 @@ const TradingViewWidget = ({ symbol }) => {
 
   useEffect(() => {
     if (containerRef.current) {
+      // Clear any existing widgets before adding a new one
+      containerRef.current.innerHTML = "";
+
       const script = document.createElement("script");
       script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
       script.type = "text/javascript";
@@ -23,6 +26,7 @@ const TradingViewWidget = ({ symbol }) => {
         "allow_symbol_change": true,
         "container_id": "tradingview_widget"
       });
+
       containerRef.current.appendChild(script);
     }
   }, [symbol]);

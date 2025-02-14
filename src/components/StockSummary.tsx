@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-interface StockSummaryProps {
-  symbol: string;
-}
-
-const StockSummary: React.FC<StockSummaryProps> = ({ symbol }) => {
+const StockSummary = ({ symbol }) => {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,18 +11,8 @@ const StockSummary: React.FC<StockSummaryProps> = ({ symbol }) => {
       setLoading(true);
       setError('');
       try {
-        const response = await fetch('http://127.0.0.1:5000/analyze-stock', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ ticker: symbol })
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch stock summary');
-        }
-        const data = await response.json();
-        setSummary(data.analysis);
+        const response = await axios.post('http://127.0.0.1:5000/analyze-stock', { ticker: symbol });
+        setSummary(response.data.analysis);
       } catch (err) {
         setError('Error fetching stock summary. Please try again.');
       } finally {
@@ -37,11 +24,13 @@ const StockSummary: React.FC<StockSummaryProps> = ({ symbol }) => {
   }, [symbol]);
 
   if (loading) {
-    return <div className="animate-pulse">
-      <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
-      <div className="h-4 bg-gray-700 rounded w-full mb-4"></div>
-      <div className="h-4 bg-gray-700 rounded w-5/6"></div>
-    </div>;
+    return (
+      <div className="animate-pulse">
+        <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
+        <div className="h-4 bg-gray-700 rounded w-full mb-4"></div>
+        <div className="h-4 bg-gray-700 rounded w-5/6"></div>
+      </div>
+    );
   }
 
   if (error) {
@@ -53,6 +42,6 @@ const StockSummary: React.FC<StockSummaryProps> = ({ symbol }) => {
       <p className="text-gray-300 leading-relaxed">{summary}</p>
     </div>
   );
-}
+};
 
 export default StockSummary;
