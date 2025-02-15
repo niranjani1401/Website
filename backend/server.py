@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from newspaper import Article
+from ipo_scraper import get_ipo_analysis
 import google.generativeai as genai
 from flask_cors import CORS
 
@@ -116,6 +117,21 @@ def analyze_stock_endpoint():
 
     analysis = get_stock_analysis(ticker)
     return jsonify({"analysis": analysis})
+
+@app.route('/analyze-ipo', methods=['POST'])
+def analyze_ipo_endpoint():
+    """
+    Receives a JSON payload with an IPO keyword and returns the AI-generated analysis.
+    Expected payload: { "ticker": "IPO_keyword_here" }
+    """
+    data = request.json
+    ipo_keyword = data.get("ticker")
+    if not ipo_keyword:
+        return jsonify({"error": "IPO keyword is required"}), 400
+
+    analysis = get_ipo_analysis(ipo_keyword)
+    return jsonify({"analysis": analysis})
+
 
 # Run Flask App
 if __name__ == '__main__':

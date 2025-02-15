@@ -16,7 +16,7 @@ const TradingViewWidget = ({ symbol }) => {
         "symbol": symbol || "NASDAQ:AAPL",
         "width": "100%",
         "height": 500,
-        "theme": "light",
+        "theme": "dark",
         "interval": "D",
         "timezone": "Etc/UTC",
         "style": "1",

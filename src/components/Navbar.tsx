@@ -15,20 +15,38 @@ const Navbar = () => {
         <nav className="flex space-x-6">
           <Link
             to="/stock-analysis"
-            className={`text-lg ${location.pathname === '/stock-analysis' ? 'text-blue-500' : 'text-gray-300 hover:text-blue-400'}`}
+            className={`text-lg ${
+              location.pathname === '/stock-analysis'
+                ? 'text-blue-500'
+                : 'text-gray-300 hover:text-blue-400'
+            }`}
           >
             Stock Analysis
           </Link>
           <Link
             to="/faang-predictor"
-            className={`text-lg ${location.pathname === '/faang-predictor' ? 'text-blue-500' : 'text-gray-300 hover:text-blue-400'}`}
+            className={`text-lg ${
+              location.pathname === '/faang-predictor'
+                ? 'text-blue-500'
+                : 'text-gray-300 hover:text-blue-400'
+            }`}
           >
             FAANG Predictor
+          </Link>
+          <Link
+            to="/ipo-summary"
+            className={`text-lg ${
+              location.pathname === '/ipo-summary'
+                ? 'text-blue-500'
+                : 'text-gray-300 hover:text-blue-400'
+            }`}
+          >
+            IPO Summary
           </Link>
         </nav>
       </div>
     </header>
   );
-}
+};
 
 export default Navbar;
